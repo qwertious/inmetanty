@@ -3,6 +3,14 @@
   <title>
     INMETANTY
   </title>
-  <canvas style="color:#00FFFF">
+  <canvas id="canvas" width=1024, height=768>
   </canvas>
+  <script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    
+	var skyTexure = new Image();
+    var skyTexture.src = "textures/ourworldSkyTexture.png";
+    ctx.drawImage(skyTexture, 0, 0, ctx.canvas.width, ctx.canvas.height);
+  </script>
 </html>
