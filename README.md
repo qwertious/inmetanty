@@ -6,3 +6,7 @@ The name of this game has recently changed, so if you see the name Infinite 2DCr
 This game is fully in HTML, so it should be able to run on practically any device. To run, just take main.html and drag it onto an open web browser window. It should start running, even without internet connection.
 
 If you want to download this game, please go to a specific version's branch. Otherwise, you could download the game with very experimental features in it and possibly some game-breaking glitches.
+
+I have barely started development, so suggestions are appreciated.
+
+Thank you!
