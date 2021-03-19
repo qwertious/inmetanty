@@ -11,8 +11,9 @@
     
     var skyTexture = new Image();
     skyTexture.src = "textures/ourworldSkyTexture.png";
-    skyTexture.onLoad = function() {
+    function gameLoop() {
       ctx.drawImage(skyTexture, 0, 0, canvas.width, canvas.height);
     }
+    setInterval(gameLoop, 100/6)
   </script>
 </html>
