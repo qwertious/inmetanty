@@ -3,7 +3,7 @@
   <title>
     INMETANTY
   </title>
-  <canvas id="canvas" width=1500, height=700>
+  <canvas id="canvas" width=1250, height=700>
   </canvas>
   <script>
     var canvas = document.getElementById("canvas");
@@ -15,7 +15,7 @@
     grassTexture.src = "textures/block/grassTexture.png";
     function gameLoop() {
       ctx.drawImage(skyTexture, 0, 0, canvas.width, canvas.height);
-      ctx.drawImage(grassTexture, canvas.width/2-grassTexture.width/2, canvas.height/2-grassTexture.height/2, canvas.width/2+grassTexture.width/2, canvas.height/2+grasstTexture.height/2);
+      ctx.drawImage(grassTexture, canvas.width/2-grassTexture.width/2, canvas.height/2-grassTexture.height/2, canvas.width/2+grassTexture.width/2, canvas.height/2+grassTexture.height/2);
     }
     setInterval(gameLoop, 100/6)
   </script>
