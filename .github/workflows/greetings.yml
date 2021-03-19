@@ -1,0 +1,13 @@
+name: Greetings
+
+on: [pull_request, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: 'Thank you for contributing to Inmetanty! We are just getting started with this game and we really appreciate your support.'
+        pr-message: 'Thankyou for requesting a pull! This is perhaps the most help you could give us!'
