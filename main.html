@@ -15,8 +15,8 @@
     var grassTexture = new Image();
     grassTexture.src = "textures/block/grassTexture.png";
     
-    var x = 100;
-    var y = 100;
+    var playerX = 100;
+    var playerY = 100;
     
     ctx.addEventListener("keypress", function(event) {
       if (event.key == "a" || event.key = "A") {
@@ -27,7 +27,7 @@
     });
     function gameLoop() {
       ctx.drawImage(skyTexture, 0, 0, canvas.width, canvas.height);
-      ctx.drawImage(grassTexture, canvas.width/2-grassTexture.width/4-x, canvas.height/2-grassTexture.height/4-x, grassTexture.width/2,grassTexture.height/2);
+      ctx.drawImage(grassTexture, canvas.width/2-grassTexture.width/4-playerX, canvas.height/2-grassTexture.height/4-playerY, grassTexture.width/2,grassTexture.height/2);
     }
     setInterval(gameLoop, 100/6);
   </script>
