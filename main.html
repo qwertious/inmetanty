@@ -19,15 +19,15 @@
     var y = 100
     
     ctx.addEventListener("keypress", function(event) {
-      if (event.key == "a") {
+      if (event.key == "a" || event.key = "A") {
         x--;
-      } else if (event.key == "d") {
+      } else if (event.key == "d" || event.key = "D") {
         x++;
       }
     });
     function gameLoop() {
       ctx.drawImage(skyTexture, 0, 0, canvas.width, canvas.height);
-      ctx.drawImage(grassTexture, canvas.width/2-grassTexture.width/4, canvas.height/2-grassTexture.height/4, grassTexture.width/2,grassTexture.height/2);
+      ctx.drawImage(grassTexture, canvas.width/2-grassTexture.width/4+x, canvas.height/2-grassTexture.height/4+x, grassTexture.width/2,grassTexture.height/2);
     }
     setInterval(gameLoop, 100/6)
   </script>
