@@ -10,4 +10,6 @@ If you want to download this game, please go to a specific version's branch. Oth
 Also, these downloads are for the offline version, which doesn't have as many features. For all features, check out qwertious.github.io/INMETANTY.
 I have barely started development, so suggestions are appreciated.
 
+The music for this game was and is made with Auxy.
+
 Thank you!
