@@ -7,8 +7,9 @@ This game is fully in HTML, so it should be able to run on practically any devic
 
 If you want to download this game, please go to a specific version's branch. Otherwise, you could download the game with very experimental features in it and possibly some game-breaking glitches.
 
-Also, these downloads are for the offline version, which doesn't have as many features. For all features, check out qwertious.github.io/INMETANTY.
-I have barely started development, so suggestions are appreciated.
+Also, these downloads are for the offline version, which doesn't have as many features. For all features, check out qwertious.github.io/INMETANTY. This website is down for right now, but it will be back up later.
+
+I have barely started development, so suggestions are appreciated. Also, the wiki is editable by everyone, so the community can make the wiki for this game.
 
 The music for this game was and is made with Auxy.
 
