@@ -16,7 +16,6 @@
     grassTexture.src = "textures/block/grassTexture.png";
     
     var music = new Audio("music/ourworldAmbience.m4a");
-    music.play();
     
     var playerX = 0;
     var playerY = 0;
@@ -27,6 +26,7 @@
       } else if (event.key == "d" || event.key == "D") {
         playerX++;
       }
+      music.play();
     });
     function gameLoop() {
       ctx.drawImage(skyTexture, 0, 0, canvas.width, canvas.height);
