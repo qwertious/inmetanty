@@ -22,9 +22,9 @@
     
     document.addEventListener("keypress", function(event) {
       if (event.key == "a" || event.key == "A") {
-        playerX--;
+        playerX = playerX - 10;
       } else if (event.key == "d" || event.key == "D") {
-        playerX++;
+        playerX = playerX + 10;
       }
       music.play();
     });
