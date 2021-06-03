@@ -1,6 +1,7 @@
 CREDITS
 
 Developers: Frankie Sherman and Dylan Scott
-Coders: Frankie Sherman, probably later Dylan Scott
-Music: Frankie Sherman, made with Auxy
-Artists: Frankie Sherman, probably later Dylan Scott
+Coders: Frankie Sherman
+Music: Frankie Sherman and Dylan Scott, made with Auxy
+Artists: Frankie Sherman
+Ideas: Frankie Sherman and Dylan Scott
