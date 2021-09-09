@@ -12,4 +12,6 @@ I have barely started development, so suggestions are appreciated. Also, the wik
 
 The music for this game was and is made with Auxy.
 
+This game uses cookies to save your game.
+
 Thank you!
