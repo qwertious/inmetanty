@@ -19,9 +19,28 @@
     
     var playerX = 0;
     var playerY = 0;
-    
+    if (getCookie("username")!="") {
+      let username = getCookie("username");
+      window.alert("Welcome back, " + username + "!");
+    }
     let username = window.prompt("What is your username?","John Doe");
     document.cookie = "username=" + username + "; expires=Fri, 1 Jan 9999 12:00:00 EST";
+    
+    function getCookie(cname) {
+  let name = cname + "=";
+  let cookie = document.cookie;
+  let ca = cookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
     
     document.addEventListener("keypress", function(event) {
       if (event.key == "a" || event.key == "A") {
