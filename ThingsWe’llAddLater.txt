@@ -1,7 +1,0 @@
-Things We'll add later
-
--Block management system
--Perlin noise generated landscape
--Perlin noise generated caves
--Perlin noise generated trees
--Sky texture changes
