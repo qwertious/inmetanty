@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Inmetanty</title>
+</head>
+
+<body style="margin: 0;">
+    <canvas id="view" style="background-color: black; position: absolute;" width="16" height="16"></canvas>
+    <script>
+        var width = 16;
+        var height = 16;
+        var ow = 16;
+        var oh = 16;
+        var scale = 16;
+        var view = document.getElementById("view");
+        var ctx = view.getContext("2d");
+        var screen = "presents";
+        var i = 0;
+
+        var logo = new Image();
+        logo.src = "assets/textures/logo.png";
+        var music = new Audio();
+
+        view.addEventListener("click", function (e) {
+            if (screen == "presents") {
+                screen = "title";
+            }
+        });
+        function loop() {
+            ctx.FillStyle = "#000000";
+            ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+            view.width = window.innerWidth;
+            view.height = window.innerHeight;
+            if (window.innerWidth * 3 / 4 > window.innerHeight) {
+                width = window.innerHeight * 4 / 3;
+                height = window.innerHeight;
+                scale = window.innerHeight / 12;
+            } else {
+                width = window.innerWidth;
+                height = window.innerWidth * 3 / 4;
+                scale = window.innerWidth / 16;
+            }
+            ow = (window.innerWidth - width) / 2;
+            oh = (window.innerHeight - height) / 2;
+            if (screen == "presents") {
+                ctx.fillStyle = "#000000";
+                ctx.fillRect(ow, oh, width, height);
+                //finish
+            }
+            if (screen == "title") {
+                ctx.fillStyle = "#00ffff";
+                ctx.fillRect(ow, oh, width, height);
+                ctx.imageSmoothingEnabled = false;
+                ctx.drawImage(logo, ow + scale + Math.sin(i/64)*scale/2, oh + scale + Math.sin(i/64*Math.sqrt(2))*scale*3/28, scale * 14 - Math.sin(i/64)*scale, scale * 3 - Math.sin(i/64*Math.sqrt(2))*scale*3/14);
+                if (music.paused) {
+                titlemusic();
+            }
+            }
+            i++;
+        }
+        function titlemusic() {
+            var r = Math.floor(Math.random() * 3);
+            if (r == 0) {
+                music.src = "assets/sound/music/qwertious_theme_song.mp3";
+            } else if (r == 1) {
+                music.src = "assets/sound/music/metastable.mp3";
+            } else {
+                music.src = "assets/sound/music/lorium.mp3";
+            }
+            music.play();
+        }
+        setInterval(loop, 1000 / 64);
+    </script>
+</body>
+
+</html>
