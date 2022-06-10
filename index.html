@@ -3,6 +3,8 @@
 
 <head>
     <title>Inmetanty</title>
+    <!--favicon-->
+    <link id="favicon" rel="shortcut icon" type="image/x-icon">
 </head>
 
 <body style="margin: 0;">
@@ -17,19 +19,32 @@
         var ctx = view.getContext("2d");
         var screen = "presents";
         var i = 0;
+        var d = [
+            ["ourworld", [
+            ]],
+        ];
+        var px = 0;
+        var py = 0;
 
         var logo = new Image();
-        logo.src = "assets/textures/logo.png";
         var background = new Image();
         background.src = "assets/textures/background.png";
         var play = new Image();
         play.src = "assets/textures/play.png";
-
+        var grass = new Image();
+        grass.src = "assets/textures/grass.png";
+        var favicon = new Image();
         var music = new Audio();
 
         view.addEventListener("click", function (e) {
             if (screen == "presents") {
                 screen = "title";
+            }
+            if (screen == "title") {
+                if (e.offsetX > ow + scale * 2 && e.offsetY > oh + scale * 8 && e.offsetX < ow + scale * 14 && e.offsetY < oh + scale * 10) {
+                    screen = "game";
+                    music.pause();
+                }
             }
         });
         function loop() {
@@ -49,29 +64,52 @@
             ow = (window.innerWidth - width) / 2;
             oh = (window.innerHeight - height) / 2;
             if (screen == "presents") {
-                ctx.fillStyle = "#000000";
+                ctx.fillStyle = "#808080";
                 ctx.fillRect(ow, oh, width, height);
-                //finish
+                favicon.src = "assets/textures/grass.png";
+                document.getElementById("favicon").href = favicon.src;
+                logo.src = "assets/textures/qwertious.png";
+                ctx.imageSmoothingEnabled = false;
+                ctx.drawImage(logo, ow, oh + scale * 5, width, scale * 2);
             }
             if (screen == "title") {
                 ctx.fillStyle = "#00ffff";
                 ctx.fillRect(ow, oh, width, height);
                 ctx.imageSmoothingEnabled = false;
-                ctx.drawImage(background, ow - width/2 + Math.sin(i/256)*width/2, oh - height/2 + Math.sin(i*Math.sqrt(2)/256)*height/2, width*2, height*2);
-                ctx.drawImage(play,ow+scale*2,oh+scale*8,scale*12,scale*2);
-                ctx.drawImage(logo, ow + scale + Math.sin(i/64)*scale/2, oh + scale + Math.sin(i/64*Math.sqrt(2))*scale*3/28, scale * 14 - Math.sin(i/64)*scale, scale * 3 - Math.sin(i/64*Math.sqrt(2))*scale*3/14);
-                ctx.fillStyle = "#000000";
-                ctx.fillRect(0, 0, ow, window.innerHeight);
-                ctx.fillRect(ow + width, 0, ow, window.innerHeight);
-                ctx.fillRect(0,0, window.innerWidth, oh);
-                ctx.fillRect(0, oh + height, window.innerWidth, oh);
+                ctx.drawImage(background, ow - width / 2 + Math.sin(i / 256) * width / 2, oh - height / 2 + Math.sin(i * Math.sqrt(2) / 256) * height / 2, width * 2, height * 2);
+                ctx.drawImage(play, ow + scale * 2, oh + scale * 8, scale * 12, scale * 2);
+                logo.src = "assets/textures/logo.png";
+                ctx.drawImage(logo, ow + scale + Math.sin(i / 64) * scale / 2, oh + scale + Math.sin(i / 64 * Math.sqrt(2)) * scale * 3 / 28, scale * 14 - Math.sin(i / 64) * scale, scale * 3 - Math.sin(i / 64 * Math.sqrt(2)) * scale * 3 / 14);
                 if (music.paused) {
-                titlemusic();
+                    mp();
+                }
             }
+            if (screen == "game") {
+                ctx.fillStyle = "#00ffff";
+                ctx.fillRect(ow, oh, width, height);
+                ctx.imageSmoothingEnabled = false;
+                for (var x = px - 1; x < 17 + px; x++) {
+                    for (var y = py - 1; y < 13 + py; y++) {
+                        if (d[x[y]] != undefined) {
+                            ctx.drawImage(d[x[y]], ow + (x + px) * scale, oh + (y + py) * scale, scale, scale);
+                        } else {
+                            d[x[y]] = grass;
+                        }
+                    }
+                }
+                if (music.paused) {
+                    mp();
+                }
             }
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(0, 0, ow, window.innerHeight);
+            ctx.fillRect(ow + width, 0, ow, window.innerHeight);
+            ctx.fillRect(0, 0, window.innerWidth, oh);
+            ctx.fillRect(0, oh + height, window.innerWidth, oh);
             i++;
         }
-        function titlemusic() {
+        function mp() {
+            if (screen == "title") {
             var r = Math.floor(Math.random() * 3);
             if (r == 0) {
                 music.src = "assets/sound/music/qwertious_theme_song.mp3";
@@ -81,6 +119,17 @@
                 music.src = "assets/sound/music/lorium.mp3";
             }
             music.play();
+            } else if (screen == "game") {
+            var r = Math.floor(Math.random() * 3);
+            if (r == 0) {
+                music.src = "assets/sound/music/upbeat.mp3";
+            } else if (r == 1) {
+                music.src = "assets/sound/music/metastable.mp3";
+            } else {
+                music.src = "assets/sound/music/calm_and_simple.mp3";
+            }
+            music.play();
+            }
         }
         setInterval(loop, 1000 / 64);
     </script>
