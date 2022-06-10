@@ -20,6 +20,11 @@
 
         var logo = new Image();
         logo.src = "assets/textures/logo.png";
+        var background = new Image();
+        background.src = "assets/textures/background.png";
+        var play = new Image();
+        play.src = "assets/textures/play.png";
+
         var music = new Audio();
 
         view.addEventListener("click", function (e) {
@@ -52,7 +57,14 @@
                 ctx.fillStyle = "#00ffff";
                 ctx.fillRect(ow, oh, width, height);
                 ctx.imageSmoothingEnabled = false;
+                ctx.drawImage(background, ow - width/2 + Math.sin(i/256)*width/2, oh - height/2 + Math.sin(i*Math.sqrt(2)/256)*height/2, width*2, height*2);
+                ctx.drawImage(play,ow+scale*2,oh+scale*8,scale*12,scale*2);
                 ctx.drawImage(logo, ow + scale + Math.sin(i/64)*scale/2, oh + scale + Math.sin(i/64*Math.sqrt(2))*scale*3/28, scale * 14 - Math.sin(i/64)*scale, scale * 3 - Math.sin(i/64*Math.sqrt(2))*scale*3/14);
+                ctx.fillStyle = "#000000";
+                ctx.fillRect(0, 0, ow, window.innerHeight);
+                ctx.fillRect(ow + width, 0, ow, window.innerHeight);
+                ctx.fillRect(0,0, window.innerWidth, oh);
+                ctx.fillRect(0, oh + height, window.innerWidth, oh);
                 if (music.paused) {
                 titlemusic();
             }
