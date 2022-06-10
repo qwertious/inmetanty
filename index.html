@@ -19,10 +19,11 @@
         var ctx = view.getContext("2d");
         var screen = "presents";
         var i = 0;
-        var d = [
-            ["ourworld", [
-            ]],
-        ];
+        //create a dictionary
+
+        var d = {};
+        d[3] = {};
+        d[3][5] = "logo";
         var px = 0;
         var py = 0;
 
@@ -31,19 +32,29 @@
         background.src = "assets/textures/background.png";
         var play = new Image();
         play.src = "assets/textures/play.png";
-        var grass = new Image();
-        grass.src = "assets/textures/grass.png";
+        var block = new Image();
         var favicon = new Image();
         var music = new Audio();
 
         view.addEventListener("click", function (e) {
             if (screen == "presents") {
                 screen = "title";
-            }
-            if (screen == "title") {
+            } else if (screen == "title") {
                 if (e.offsetX > ow + scale * 2 && e.offsetY > oh + scale * 8 && e.offsetX < ow + scale * 14 && e.offsetY < oh + scale * 10) {
                     screen = "game";
                     music.pause();
+                }
+            } else if (screen == "game") {
+                for (var x1 = px - 1; x1 < 17 + px; x1++) {
+                    for (var y1 = py - 1; y1 < 13 + py; y1++) {
+                        if (d[x1][y1] != "ourworldair") {
+                            if (e.offsetX > x1 * scale + ow && e.offsetY > y1 * scale + oh && e.offsetX < x1 * scale + scale + ow && e.offsetY < y1 * scale + scale + oh) {
+                                if (d[x1][y1] != "ourworldair") {
+                                    d[x1][y1] = "ourworldair";
+                                }
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -87,19 +98,32 @@
             if (screen == "game") {
                 ctx.fillStyle = "#00ffff";
                 ctx.fillRect(ow, oh, width, height);
-                ctx.imageSmoothingEnabled = false;
                 for (var x = px - 1; x < 17 + px; x++) {
                     for (var y = py - 1; y < 13 + py; y++) {
-                        if (d[x[y]] != undefined) {
-                            ctx.drawImage(d[x[y]], ow + (x + px) * scale, oh + (y + py) * scale, scale, scale);
-                        } else {
-                            d[x[y]] = grass;
+                        if (d[x] === undefined) {
+                            d[x] = {};
                         }
+                        if (d[x][y] === undefined) {
+                            if (y == ourworldg(x)) {
+                                d[x][y] = "grass";
+                            } else if (y > ourworldg(x)) {
+                                d[x][y] = "dirt";
+                                if (y - 3 > ourworldg(x)) {
+                                    d[x][y] = "slate";
+                                }
+                            } else {
+                                d[x][y] = "ourworldair";
+                            }
+                        }
+                        eval(d[x][y] + "i =" + "new Image()");
+                        eval(d[x][y] + "i.src = \"assets/textures/" + d[x][y] + ".png\"");
+                        ctx.imageSmoothingEnabled = false;
+                        eval("ctx.drawImage(" + [d[x][y]] + "i, ow + (x + px) * scale, oh + (y + py) * scale, scale, scale)");
                     }
                 }
-                if (music.paused) {
-                    mp();
-                }
+            }
+            if (music.paused) {
+                mp();
             }
             ctx.fillStyle = "#000000";
             ctx.fillRect(0, 0, ow, window.innerHeight);
@@ -108,27 +132,30 @@
             ctx.fillRect(0, oh + height, window.innerWidth, oh);
             i++;
         }
+        function ourworldg(a) {
+            return a;
+        }
         function mp() {
             if (screen == "title") {
-            var r = Math.floor(Math.random() * 3);
-            if (r == 0) {
-                music.src = "assets/sound/music/qwertious_theme_song.mp3";
-            } else if (r == 1) {
-                music.src = "assets/sound/music/metastable.mp3";
-            } else {
-                music.src = "assets/sound/music/lorium.mp3";
-            }
-            music.play();
+                var r = Math.floor(Math.random() * 3);
+                if (r == 0) {
+                    music.src = "assets/sound/music/qwertious_theme_song.mp3";
+                } else if (r == 1) {
+                    music.src = "assets/sound/music/metastable.mp3";
+                } else {
+                    music.src = "assets/sound/music/lorium.mp3";
+                }
+                music.play();
             } else if (screen == "game") {
-            var r = Math.floor(Math.random() * 3);
-            if (r == 0) {
-                music.src = "assets/sound/music/upbeat.mp3";
-            } else if (r == 1) {
-                music.src = "assets/sound/music/metastable.mp3";
-            } else {
-                music.src = "assets/sound/music/calm_and_simple.mp3";
-            }
-            music.play();
+                var r = Math.floor(Math.random() * 3);
+                if (r == 0) {
+                    music.src = "assets/sound/music/upbeat.mp3";
+                } else if (r == 1) {
+                    music.src = "assets/sound/music/metastable.mp3";
+                } else {
+                    music.src = "assets/sound/music/calm_and_simple.mp3";
+                }
+                music.play();
             }
         }
         setInterval(loop, 1000 / 64);
