@@ -19,13 +19,15 @@
         var ctx = view.getContext("2d");
         var screen = "presents";
         var i = 0;
-        //create a dictionary
-
         var d = {};
         d[3] = {};
-        d[3][5] = "logo";
-        var px = 0;
+        var px = 0; //Number.MAX_SAFE_INTEGER - 8
         var py = 0;
+        var inventory = {};
+        var sc = 0;
+        var lw = 0;
+        var lh = 0;
+        var ls = 64 * 64;
 
         var logo = new Image();
         var background = new Image();
@@ -34,6 +36,11 @@
         play.src = "assets/textures/play.png";
         var block = new Image();
         var favicon = new Image();
+        var item = new Image();
+        item.src = "assets/textures/item.png";
+        var back = new Image();
+        back.src = "assets/textures/back.png";
+        var luminary = new Image();
         var music = new Audio();
 
         view.addEventListener("click", function (e) {
@@ -49,15 +56,36 @@
                     for (var y1 = py - 1; y1 < 13 + py; y1++) {
                         if (d[x1][y1] != "ourworldair") {
                             if (e.offsetX > x1 * scale + ow && e.offsetY > y1 * scale + oh && e.offsetX < x1 * scale + scale + ow && e.offsetY < y1 * scale + scale + oh) {
-                                if (d[x1][y1] != "ourworldair") {
-                                    d[x1][y1] = "ourworldair";
+                                for (a = 0; a < inventory.length; a++) {
+                                    if (inventory[a] == d[x1][y1]) {
+                                    } else if (inventory[a] === undefined) {
+                                        inventory[a] = d[x1][y1];
+                                        break;
+                                    }
                                 }
+                                inventory[a] = "grass";
+                                d[x1][y1] = "ourworldair";
                             }
                         }
                     }
                 }
             }
         });
+        window.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+            if (screen == "game") {
+                for (var x1 = px - 1; x1 < 17 + px; x1++) {
+                    for (var y1 = py - 1; y1 < 13 + py; y1++) {
+                        if (d[x1][y1] == "ourworldair") {
+                            if (e.offsetX > x1 * scale + ow && e.offsetY > y1 * scale + oh && e.offsetX < x1 * scale + scale + ow && e.offsetY < y1 * scale + scale + oh) {
+                                d[x1][y1] = "dirt";
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
         function loop() {
             ctx.FillStyle = "#000000";
             ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
@@ -75,6 +103,9 @@
             ow = (window.innerWidth - width) / 2;
             oh = (window.innerHeight - height) / 2;
             if (screen == "presents") {
+                if (document.cookie == "") {
+                    screen = "prelude";
+                }
                 ctx.fillStyle = "#808080";
                 ctx.fillRect(ow, oh, width, height);
                 favicon.src = "assets/textures/grass.png";
@@ -82,6 +113,12 @@
                 logo.src = "assets/textures/qwertious.png";
                 ctx.imageSmoothingEnabled = false;
                 ctx.drawImage(logo, ow, oh + scale * 5, width, scale * 2);
+            }
+            if (screen == "prelude") {
+                document.cookie = "prelude=true";
+                logo.src = "assets/textures/prelude.png";
+                ctx.imageSmoothingEnabled = false;
+                ctx.drawImage(logo, ow, oh, width, height);
             }
             if (screen == "title") {
                 ctx.fillStyle = "#00ffff";
@@ -98,6 +135,35 @@
             if (screen == "game") {
                 ctx.fillStyle = "#00ffff";
                 ctx.fillRect(ow, oh, width, height);
+                sc++;
+                if (sc = 8 * ls) {
+                    sc = 0;
+                } else if (sc < ls) {
+                    luminary.src = "assets/textures/sun.png";
+                } else if (sc > ls && sc < 2 * ls) {
+                    luminary.src = "assets/textures/moon1.png";
+                } else if (sc > 2 * ls && sc < 3 * ls) {
+                    luminary.src = "assets/textures/sun.png";
+                } else if (sc > 3 * ls && sc < 4 * ls) {
+                    luminary.src = "assets/textures/moon2.png";
+                } else if (sc > 4 * ls && sc < 5 * ls) {
+                    luminary.src = "assets/textures/sun.png";
+                } else if (sc > 5 * ls && sc < 6 * ls) {
+                    luminary.src = "assets/textures/moon3.png";
+                } else if (sc > 6 * ls && sc < 7 * ls) {
+                    luminary.src = "assets/textures/sun.png";
+                } else {
+                    luminary.src = "assets/textures/moon4.png";
+                }
+                lw = 18 * sc / ls;
+                while (lw > 18) {
+                    lw -= 18;
+                }
+                lh = 14 * sc / ls;
+                while (lh > 14) {
+                    lh -= 14;
+                }
+                ctx.drawImage(luminary, ow + scale * lw - scale, oh + scale * lh - scale, scale, scale);
                 for (var x = px - 1; x < 17 + px; x++) {
                     for (var y = py - 1; y < 13 + py; y++) {
                         if (d[x] === undefined) {
@@ -112,13 +178,26 @@
                                     d[x][y] = "slate";
                                 }
                             } else {
-                                d[x][y] = "ourworldair";
+                                d[x][y] = "none";
                             }
                         }
                         eval(d[x][y] + "i =" + "new Image()");
                         eval(d[x][y] + "i.src = \"assets/textures/" + d[x][y] + ".png\"");
-                        ctx.imageSmoothingEnabled = false;
-                        eval("ctx.drawImage(" + [d[x][y]] + "i, ow + (x + px) * scale, oh + (y + py) * scale, scale, scale)");
+                        if (d[x][y] == "none") {
+                        } else {
+                            ctx.imageSmoothingEnabled = false;
+                            eval("ctx.drawImage(" + [d[x][y]] + "i, ow + (x + px) * scale, oh + (y + py) * scale, scale, scale)");
+                        }
+                        for (a1 = 0; a1 < 8; a1++) {
+                            if (inventory[a1] === undefined) {
+                                ctx.drawImage(back, ow + scale * (4 + a1), oh + scale * 11, scale, scale);
+                            } else {
+                                eval(inventory[a1] + "i =" + "new Image()");
+                                eval(inventory[a1] + "i.src = \"assets/textures/" + inventory[a1] + ".png\"");
+                                eval("ctx.drawImage(" + inventory[a1] + "i, ow + scale * (4 +a1), oh + scale*11, scale, scale)");
+                            }
+                            ctx.drawImage(item, ow + scale * (4 + a1), oh + scale * 11, scale, scale);
+                        }
                     }
                 }
             }
@@ -132,8 +211,14 @@
             ctx.fillRect(0, oh + height, window.innerWidth, oh);
             i++;
         }
-        function ourworldg(a) {
-            return a;
+        function ourworldg(a2) {
+            return -
+                Math.round(
+                    (
+                        Math.sin(Math.PI * Math.round(a2) / 2048) * 512
+                        + Math.sin(Math.PI * Math.round(a2) * Math.sqrt(2) / 2048) * 512
+                        + Math.sin(Math.PI * Math.round(a2) * Math.sqrt(3) / 2048) * 512
+                    ) / 3) + 12;
         }
         function mp() {
             if (screen == "title") {
