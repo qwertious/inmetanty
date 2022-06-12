@@ -184,6 +184,7 @@
                 while (lh > 14) {
                     lh -= 14;
                 }
+                ctx.imageSmoothingEnabled = false;
                 ctx.drawImage(luminary, ow + scale * lw - scale, oh + scale * lh - scale, scale, scale);
                 for (var x = px - 1; x < 17 + px; x++) {
                     for (var y = py - 1; y < 13 + py; y++) {
@@ -206,7 +207,6 @@
                         eval(d[x][y] + "i.src = \"assets/textures/" + d[x][y] + ".png\"");
                         if (d[x][y] == "none") {
                         } else {
-                            ctx.imageSmoothingEnabled = false;
                             eval("ctx.drawImage(" + [d[x][y]] + "i, ow + (x + px) * scale, oh + (y + py) * scale, scale, scale)");
                         }
                         for (a1 = 0; a1 < 8; a1++) {
