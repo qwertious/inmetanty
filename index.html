@@ -27,7 +27,7 @@
         var sc = 0;
         var lw = 0;
         var lh = 0;
-        var ls = 64*64*16;
+        var ls = 64*64*8;
 
         var logo = new Image();
         var background = new Image();
@@ -84,7 +84,7 @@
             if (screen == "game") {
                 for (var x1 = px - 1; x1 < 17 + px; x1++) {
                     for (var y1 = py - 1; y1 < 13 + py; y1++) {
-                        if (d[x1][y1] == "ourworldair") {
+                        if (d[x1][y1] == "none") {
                             if (e.offsetX > x1 * scale + ow && e.offsetY > y1 * scale + oh && e.offsetX < x1 * scale + scale + ow && e.offsetY < y1 * scale + scale + oh) {
                                 d[x1][y1] = "dirt";
                             }
@@ -149,10 +149,10 @@
             }
             if (screen == "game") {
                 sc = i;
-                while (sc > 8*ls) {
-                    sc -= 8*ls;
+                while (sc > 8 * ls) {
+                    sc -= 8 * ls;
                 }
-                if (Math.ceil(sc/ls)%2 == 0) {
+                if (Math.ceil(sc / ls) % 2 == 0) {
                     ctx.fillStyle = "#000000";
                     ctx.fillRect(ow, oh, width, height);
                 } else {
@@ -207,7 +207,15 @@
                         eval(d[x][y] + "i.src = \"assets/textures/" + d[x][y] + ".png\"");
                         if (d[x][y] == "none") {
                         } else {
-                            eval("ctx.drawImage(" + [d[x][y]] + "i, ow + (x + px) * scale, oh + (y + py) * scale, scale, scale)");
+                            if (Math.ceil(sc / ls) % 2 == 0) {
+                                //make the images darker
+                                ctx.fillRect(ow + scale * x, oh + scale * y, scale, scale);
+                                ctx.globalAlpha = 0.5;
+                                eval("ctx.drawImage(" + d[x][y] + "i, ow + (x + px) * scale, oh + (y + py) * scale, scale, scale)");
+                                ctx.globalAlpha = 1;
+                            } else {
+                            eval("ctx.drawImage(" + d[x][y] + "i, ow + (x + px) * scale, oh + (y + py) * scale, scale, scale)");
+                            }
                         }
                         for (a1 = 0; a1 < 8; a1++) {
                             if (inventory[a1] === undefined) {
@@ -262,7 +270,7 @@
                 } else {
                     music.src = "assets/sound/music/calm_and_simple.mp3";
                 }
-            } 
+            }
             music.play();
         }
         function write(a3, b, c) {
