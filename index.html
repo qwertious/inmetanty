@@ -42,10 +42,19 @@
         back.src = "assets/textures/back.png";
         var luminary = new Image();
         var music = new Audio();
+        var font = new Image();
 
         view.addEventListener("click", function (e) {
-            if (screen == "presents") {
+            if (screen == "prologue") {
                 screen = "title";
+                music.pause();
+            } else if (screen == "presents") {
+                if (document.cookie.includes("prologue=true")) {
+                    screen = "title";
+                } else {
+                    screen = "prologue";
+                }
+                music.pause();
             } else if (screen == "title") {
                 if (e.offsetX > ow + scale * 2 && e.offsetY > oh + scale * 8 && e.offsetX < ow + scale * 14 && e.offsetY < oh + scale * 10) {
                     screen = "game";
@@ -63,7 +72,6 @@
                                         break;
                                     }
                                 }
-                                inventory[a] = "grass";
                                 d[x1][y1] = "ourworldair";
                             }
                         }
@@ -103,22 +111,29 @@
             ow = (window.innerWidth - width) / 2;
             oh = (window.innerHeight - height) / 2;
             if (screen == "presents") {
-                if (document.cookie == "") {
-                    screen = "prelude";
-                }
                 ctx.fillStyle = "#808080";
                 ctx.fillRect(ow, oh, width, height);
                 favicon.src = "assets/textures/grass.png";
                 document.getElementById("favicon").href = favicon.src;
                 logo.src = "assets/textures/qwertious.png";
                 ctx.imageSmoothingEnabled = false;
-                ctx.drawImage(logo, ow, oh + scale * 5, width, scale * 2);
+                ctx.drawImage(logo, ow, oh + scale * 4, width, scale * 2);
+                write("presents", 12, 16);
             }
-            if (screen == "prelude") {
-                document.cookie = "prelude=true";
-                logo.src = "assets/textures/prelude.png";
+            if (screen == "prologue") {
+                document.cookie = "prologue=true";
+                logo.src = "assets/textures/prologue.png";
                 ctx.imageSmoothingEnabled = false;
                 ctx.drawImage(logo, ow, oh, width, height);
+                write("  this", 14, 10);
+                write(" is the", 14, 11);
+                write("story of", 14, 12);
+                write("~a man", 14, 13);
+                write("~named", 14, 14);
+                write(" epome.", 14, 15);
+                if (music.paused) {
+                    mp();
+                }
             }
             if (screen == "title") {
                 ctx.fillStyle = "#00ffff";
@@ -221,7 +236,9 @@
                     ) / 3) + 12;
         }
         function mp() {
-            if (screen == "title") {
+            if (screen == "prologue") {
+                music.src = "assets/sound/music/nostalgia.mp3";
+            } else if (screen == "title") {
                 var r = Math.floor(Math.random() * 3);
                 if (r == 0) {
                     music.src = "assets/sound/music/qwertious_theme_song.mp3";
@@ -230,7 +247,6 @@
                 } else {
                     music.src = "assets/sound/music/lorium.mp3";
                 }
-                music.play();
             } else if (screen == "game") {
                 var r = Math.floor(Math.random() * 3);
                 if (r == 0) {
@@ -240,7 +256,24 @@
                 } else {
                     music.src = "assets/sound/music/calm_and_simple.mp3";
                 }
-                music.play();
+            } 
+            music.play();
+        }
+        function write(a3, b, c) {
+            var space = 0;
+            for (i1 = 0; i1 < a3.length; i1++) {
+                var character = a3.charAt(i1);
+                if (character == " ") {
+                } else if (character == "~") {
+                    space++;
+                } else {
+                    if (character == ".") {
+                        character = "period";
+                    }
+                    eval(character + " = new Image()");
+                    eval(character + ".src = \"assets/textures/" + character + ".png\"");
+                    eval("ctx.drawImage(" + character + ", ow + scale * (b +i1 + space/2)/2, oh + c*scale/2, scale/2, scale/2)");
+                }
             }
         }
         setInterval(loop, 1000 / 64);
