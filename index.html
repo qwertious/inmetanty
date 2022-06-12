@@ -216,9 +216,6 @@
                     }
                 }
             }
-            if (music.paused) {
-                mp();
-            }
             ctx.fillStyle = "#000000";
             ctx.fillRect(0, 0, ow, window.innerHeight);
             ctx.fillRect(ow + width, 0, ow, window.innerHeight);
@@ -270,9 +267,9 @@
                     if (character == ".") {
                         character = "period";
                     }
-                    eval(character + " = new Image()");
-                    eval(character + ".src = \"assets/textures/" + character + ".png\"");
-                    eval("ctx.drawImage(" + character + ", ow + scale * (b +i1 + space/2)/2, oh + c*scale/2, scale/2, scale/2)");
+                    eval(character + "c = new Image()");
+                    eval(character + "c.src = \"assets/textures/" + character + ".png\"");
+                    eval("ctx.drawImage(" + character + "c, ow + scale * (b +i1 + space/2)/2, oh + c*scale/2, scale/2, scale/2)");
                 }
             }
         }
