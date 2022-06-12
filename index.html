@@ -215,6 +215,9 @@
                         }
                     }
                 }
+                if (music.paused) {
+                    mp();
+                }
             }
             ctx.fillStyle = "#000000";
             ctx.fillRect(0, 0, ow, window.innerHeight);
