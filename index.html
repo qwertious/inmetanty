@@ -27,7 +27,7 @@
         var sc = 0;
         var lw = 0;
         var lh = 0;
-        var ls = 64 * 64;
+        var ls = 64*64*16;
 
         var logo = new Image();
         var background = new Image();
@@ -63,7 +63,7 @@
             } else if (screen == "game") {
                 for (var x1 = px - 1; x1 < 17 + px; x1++) {
                     for (var y1 = py - 1; y1 < 13 + py; y1++) {
-                        if (d[x1][y1] != "ourworldair") {
+                        if (d[x1][y1] != "none") {
                             if (e.offsetX > x1 * scale + ow && e.offsetY > y1 * scale + oh && e.offsetX < x1 * scale + scale + ow && e.offsetY < y1 * scale + scale + oh) {
                                 for (a = 0; a < inventory.length; a++) {
                                     if (inventory[a] == d[x1][y1]) {
@@ -72,7 +72,7 @@
                                         break;
                                     }
                                 }
-                                d[x1][y1] = "ourworldair";
+                                d[x1][y1] = "none";
                             }
                         }
                     }
@@ -148,12 +148,18 @@
                 }
             }
             if (screen == "game") {
-                ctx.fillStyle = "#00ffff";
-                ctx.fillRect(ow, oh, width, height);
-                sc++;
-                if (sc = 8 * ls) {
-                    sc = 0;
-                } else if (sc < ls) {
+                sc = i;
+                while (sc > 8*ls) {
+                    sc -= 8*ls;
+                }
+                if (Math.ceil(sc/ls)%2 == 0) {
+                    ctx.fillStyle = "#000000";
+                    ctx.fillRect(ow, oh, width, height);
+                } else {
+                    ctx.fillStyle = "#00ffff";
+                    ctx.fillRect(ow, oh, width, height);
+                }
+                if (sc < ls) {
                     luminary.src = "assets/textures/sun.png";
                 } else if (sc > ls && sc < 2 * ls) {
                     luminary.src = "assets/textures/moon1.png";
