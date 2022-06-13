@@ -27,7 +27,11 @@
         var sc = 0;
         var lw = 0;
         var lh = 0;
-        var ls = 64*64*8;
+        var ls = 64 * 64;
+        var keyw = 0;
+        var keya = 0;
+        var keys = 0;
+        var keyd = 0;
 
         var logo = new Image();
         var background = new Image();
@@ -43,7 +47,29 @@
         var luminary = new Image();
         var music = new Audio();
         var font = new Image();
-
+        document.addEventListener("keydown", function (e) {
+            if (e.keyCode == 87) {
+                keyw = 1;
+            } else if (e.keyCode == 83) {
+                keys = 1;
+            } else if (e.keyCode == 65) {
+                keyd = 1;
+            } else if (e.keyCode == 68) {
+                keya = 1;
+            }
+        });
+        //add a listener for keyup
+        document.addEventListener("keyup", function (e) {
+            if (e.keyCode == 87) {
+                keyw = 0;
+            } else if (e.keyCode == 83) {
+                keys = 0;
+            } else if (e.keyCode == 65) {
+                keyd = 0;
+            } else if (e.keyCode == 68) {
+                keya = 0;
+            }
+        });
         view.addEventListener("click", function (e) {
             if (screen == "prologue") {
                 screen = "title";
@@ -61,10 +87,10 @@
                     music.pause();
                 }
             } else if (screen == "game") {
-                for (var x1 = px - 1; x1 < 17 + px; x1++) {
-                    for (var y1 = py - 1; y1 < 13 + py; y1++) {
+                for (var x1 = Math.floor(px / 16 - 1); x1 < Math.ceil(17 + px / 16); x1++) {
+                    for (var y1 = Math.floor(-py / 16 - 1); y1 < Math.ceil(13 - py / 16); y1++) {
                         if (d[x1][y1] != "none") {
-                            if (e.offsetX > x1 * scale + ow && e.offsetY > y1 * scale + oh && e.offsetX < x1 * scale + scale + ow && e.offsetY < y1 * scale + scale + oh) {
+                            if (e.offsetX > (x1 + px / 16) * scale + ow && e.offsetY > (y1 + py / 16) * scale + oh && e.offsetX < (x1 + px / 16) * scale + scale + ow && e.offsetY < (y1 + py / 16) * scale + scale + oh) {
                                 for (a = 0; a < inventory.length; a++) {
                                     if (inventory[a] == d[x1][y1]) {
                                     } else if (inventory[a] === undefined) {
@@ -72,7 +98,12 @@
                                         break;
                                     }
                                 }
-                                d[x1][y1] = "none";
+                                if (d[x1][y1 + "s"] == true) {
+                                    d[x1][y1] = "none";
+                                    d[x1][y1 + "s"] = false;
+                                } else {
+                                    d[x1][y1 + "s"] = true;
+                                }
                             }
                         }
                     }
@@ -82,10 +113,10 @@
         window.addEventListener("contextmenu", function (e) {
             e.preventDefault();
             if (screen == "game") {
-                for (var x1 = px - 1; x1 < 17 + px; x1++) {
-                    for (var y1 = py - 1; y1 < 13 + py; y1++) {
+                for (var x1 = Math.floor(px - 1); x1 < Math.ceil(17 + px); x1++) {
+                    for (var y1 = Math.floor(py - 1); y1 < Math.ceil(13 + py); y1++) {
                         if (d[x1][y1] == "none") {
-                            if (e.offsetX > x1 * scale + ow && e.offsetY > y1 * scale + oh && e.offsetX < x1 * scale + scale + ow && e.offsetY < y1 * scale + scale + oh) {
+                            if (e.offsetX > (x1 + px / 16) * scale + ow && e.offsetY > (y1 + py / 16) * scale + oh && e.offsetX < (x1 + px / 16) * scale + scale + ow && e.offsetY < (y1 + py / 16) * scale + scale + oh) {
                                 d[x1][y1] = "dirt";
                             }
                         }
@@ -148,6 +179,18 @@
                 }
             }
             if (screen == "game") {
+                if (keyw == 1) {
+                    py += 4;
+                }
+                if (keya == 1) {
+                    px -= 4;
+                }
+                if (keys == 1) {
+                    py -= 4;
+                }
+                if (keyd == 1) {
+                    px += 4;
+                }
                 sc = i;
                 while (sc > 8 * ls) {
                     sc -= 8 * ls;
@@ -186,36 +229,50 @@
                 }
                 ctx.imageSmoothingEnabled = false;
                 ctx.drawImage(luminary, ow + scale * lw - scale, oh + scale * lh - scale, scale, scale);
-                for (var x = px - 1; x < 17 + px; x++) {
-                    for (var y = py - 1; y < 13 + py; y++) {
+                for (var x = -Math.floor(px / 16 + 1); x < Math.ceil(17 - px / 16); x++) {
+                    for (var y = -Math.floor(py / 16 + 1); y < Math.ceil(13 - py / 16); y++) {
                         if (d[x] === undefined) {
                             d[x] = {};
                         }
                         if (d[x][y] === undefined) {
                             if (y == ourworldg(x)) {
                                 d[x][y] = "grass";
+                                if (y < 0) {
+                                    if (Math.floor(Math.sin(x * Math.sqrt(2) * 64 * 64)) == 0) {
+                                        d[x][y - 1] = "blade";
+                                    }
+                                }
                             } else if (y > ourworldg(x)) {
                                 d[x][y] = "dirt";
                                 if (y - 3 > ourworldg(x)) {
                                     d[x][y] = "slate";
                                 }
                             } else {
-                                d[x][y] = "none";
+                                if (y >= 12) {
+                                    d[x][y] = "water";
+                                } else {
+                                    d[x][y] = "none";
+                                }
                             }
                         }
                         eval(d[x][y] + "i =" + "new Image()");
                         eval(d[x][y] + "i.src = \"assets/textures/" + d[x][y] + ".png\"");
                         if (d[x][y] == "none") {
+                        } else if (d[x][y] == "water") {
+                            wateri.src = "assets/textures/water.gif";
+                            ctx.drawImage(wateri, ow + scale * (x + px / 16), oh + scale * (y + py / 16), scale, scale);
                         } else {
                             if (Math.ceil(sc / ls) % 2 == 0) {
-                                //make the images darker
-                                ctx.fillRect(ow + scale * x, oh + scale * y, scale, scale);
+                                ctx.fillRect(ow + scale * (x + px / 16), oh + scale * (y + py / 16), scale, scale);
                                 ctx.globalAlpha = 0.5;
-                                eval("ctx.drawImage(" + d[x][y] + "i, ow + (x + px) * scale, oh + (y + py) * scale, scale, scale)");
-                                ctx.globalAlpha = 1;
-                            } else {
-                            eval("ctx.drawImage(" + d[x][y] + "i, ow + (x + px) * scale, oh + (y + py) * scale, scale, scale)");
                             }
+                            if (d[x][y + "s"] == true) {
+                                ctx.fillStyle = "#000000";
+                                ctx.fillRect(ow + scale * (x + px / 16), oh + scale * (y + py / 16), scale, scale);
+                                ctx.globalAlpha /= 2;
+                            }
+                            eval("ctx.drawImage(" + d[x][y] + "i, ow + (x + px/16) * scale, oh + (y + py/16) * scale, scale, scale)");
+                            ctx.globalAlpha = 1;
                         }
                         for (a1 = 0; a1 < 8; a1++) {
                             if (inventory[a1] === undefined) {
@@ -247,7 +304,12 @@
                         Math.sin(Math.PI * Math.round(a2) / 2048) * 512
                         + Math.sin(Math.PI * Math.round(a2) * Math.sqrt(2) / 2048) * 512
                         + Math.sin(Math.PI * Math.round(a2) * Math.sqrt(3) / 2048) * 512
-                    ) / 3) + 12;
+                    ) / 3
+                    //+ 128 ^ (Math.sin(Math.PI * Math.round(a2) / 1024))
+                    //+ 64 ^ (Math.sin(Math.PI * Math.round(a2) * Math.sqrt(2) / 512))
+                    //+ 32 ^ (Math.sin(Math.PI * Math.round(a2) * Math.sqrt(3) / 256))
+                    //- 1.5
+                ) + 12;
         }
         function mp() {
             if (screen == "prologue") {
