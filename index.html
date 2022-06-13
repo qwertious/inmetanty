@@ -251,7 +251,7 @@
                                     d[x][y] = "slate";
                                     if (y - 50 > ourworldg(x)) {
                                         d[x][y] = "sandstone";
-                                        if (y-100 > ourworldg(x)) {
+                                        if (y - 100 > ourworldg(x)) {
                                             d[x][y] = "slate";
                                         }
                                     }
@@ -276,7 +276,13 @@
                                 ctx.globalAlpha = 0.5;
                             }
                             if (d[x][y + "s"] == true) {
-                                ctx.fillStyle = "#000000";
+                                if (d[x + 1][y] == "none" || d[x - 1][y] == "none" || d[x][y + 1] == "none" || d[x][y - 1] == "none") {
+                                    ctx.fillStyle = "#808080";
+                                } else if (d[x + 2][y] == "none" || d[x - 2][y] == "none" || d[x][y + 2] == "none" || d[x][y - 2] == "none" || d[x + 1][y + 1] == "none" || d[x - 1][y - 1] == "none" || d[x + 1][y - 1] == "none" || d[x - 1][y + 1] == "none") {
+                                    ctx.fillStyle = "#404040";
+                                } else {
+                                    ctx.fillStyle = "#000000";
+                                }
                                 ctx.fillRect(ow + scale * (x + px / 16), oh + scale * (y + py / 16), scale, scale);
                                 ctx.globalAlpha /= 2;
                             }
@@ -310,9 +316,9 @@
             return -
                 Math.round(
                     (
-                        Math.sin(Math.PI * Math.round(a2) / 2048) * 512
-                        + Math.sin(Math.PI * Math.round(a2) * Math.sqrt(2) / 2048) * 512
-                        + Math.sin(Math.PI * Math.round(a2) * Math.sqrt(3) / 2048) * 512
+                        Math.sin(Math.PI * Math.round(a2) / (2048)) * 512
+                        + Math.sin(Math.PI * Math.round(a2) * Math.sqrt(2) / (2048)) * 512
+                        + Math.sin(Math.PI * Math.round(a2) * Math.sqrt(3) / (2048)) * 512
                     ) / 3
                     //+ 128 ^ (Math.sin(Math.PI * Math.round(a2) / 1024))
                     //+ 64 ^ (Math.sin(Math.PI * Math.round(a2) * Math.sqrt(2) / 512))
