@@ -21,7 +21,7 @@
         var i = 0;
         var d = {};
         d[3] = {};
-        var px = 0; //Number.MAX_SAFE_INTEGER - 8
+        var px = 0;
         var py = 0;
         var inventory = {};
         var sc = 0;
@@ -87,8 +87,11 @@
                     music.pause();
                 }
             } else if (screen == "game") {
-                for (var x1 = Math.floor(px / 16 - 1); x1 < Math.ceil(17 + px / 16); x1++) {
+                for (var x1 = Math.floor(-px / 16 - 1); x1 < Math.ceil(17 - px / 16); x1++) {
                     for (var y1 = Math.floor(-py / 16 - 1); y1 < Math.ceil(13 - py / 16); y1++) {
+                        if (d[x1] == undefined) {
+                            d[x1] = {};
+                        }
                         if (d[x1][y1] != "none") {
                             if (e.offsetX > (x1 + px / 16) * scale + ow && e.offsetY > (y1 + py / 16) * scale + oh && e.offsetX < (x1 + px / 16) * scale + scale + ow && e.offsetY < (y1 + py / 16) * scale + scale + oh) {
                                 for (a = 0; a < inventory.length; a++) {
@@ -246,6 +249,12 @@
                                 d[x][y] = "dirt";
                                 if (y - 3 > ourworldg(x)) {
                                     d[x][y] = "slate";
+                                    if (y - 50 > ourworldg(x)) {
+                                        d[x][y] = "sandstone";
+                                        if (y-100 > ourworldg(x)) {
+                                            d[x][y] = "slate";
+                                        }
+                                    }
                                 }
                             } else {
                                 if (y >= 12) {
