@@ -3,7 +3,6 @@
 
 <head>
     <title>Inmetanty</title>
-    <!--favicon-->
     <link id="favicon" rel="shortcut icon" type="image/x-icon">
 </head>
 
@@ -22,16 +21,20 @@
         var d = {};
         d[3] = {};
         var px = 0;
-        var py = 0;
+        var py = 64;
         var inventory = {};
         var sc = 0;
         var lw = 0;
-        var lh = 0;
+        var lh = 4 * 16;
         var ls = 64 * 64;
-        var keyw = 0;
         var keya = 0;
-        var keys = 0;
         var keyd = 0;
+        var keyspace = 0;
+        var slot = 0;
+        var gravity = true;
+        var pxs = 0;
+        var pys = 0;
+        var spacehold = 0;
 
         var logo = new Image();
         var background = new Image();
@@ -42,32 +45,35 @@
         var favicon = new Image();
         var item = new Image();
         item.src = "assets/textures/item.png";
+        var itemselected = new Image();
+        itemselected.src = "assets/textures/itemselected.png";
         var back = new Image();
         back.src = "assets/textures/back.png";
         var luminary = new Image();
         var music = new Audio();
         var font = new Image();
+        var player = new Image();
+        player.src = "assets/textures/player.png";
+
         document.addEventListener("keydown", function (e) {
-            if (e.keyCode == 87) {
-                keyw = 1;
-            } else if (e.keyCode == 83) {
-                keys = 1;
-            } else if (e.keyCode == 65) {
+            if (e.keyCode == 65) {
                 keyd = 1;
             } else if (e.keyCode == 68) {
                 keya = 1;
+                //detect space key
+            } else if (e.keyCode == 32) {
+                if (spacehold == 0) {
+                    keyspace = 1;
+                }
             }
         });
-        //add a listener for keyup
         document.addEventListener("keyup", function (e) {
-            if (e.keyCode == 87) {
-                keyw = 0;
-            } else if (e.keyCode == 83) {
-                keys = 0;
-            } else if (e.keyCode == 65) {
+            if (e.keyCode == 65) {
                 keyd = 0;
             } else if (e.keyCode == 68) {
                 keya = 0;
+            } else if (e.keyCode == 32) {
+                keyspace = 0;
             }
         });
         view.addEventListener("click", function (e) {
@@ -87,25 +93,45 @@
                     music.pause();
                 }
             } else if (screen == "game") {
-                for (var x1 = Math.floor(-px / 16 - 1); x1 < Math.ceil(17 - px / 16); x1++) {
-                    for (var y1 = Math.floor(-py / 16 - 1); y1 < Math.ceil(13 - py / 16); y1++) {
-                        if (d[x1] == undefined) {
-                            d[x1] = {};
-                        }
-                        if (d[x1][y1] != "none") {
-                            if (e.offsetX > (x1 + px / 16) * scale + ow && e.offsetY > (y1 + py / 16) * scale + oh && e.offsetX < (x1 + px / 16) * scale + scale + ow && e.offsetY < (y1 + py / 16) * scale + scale + oh) {
-                                for (a = 0; a < inventory.length; a++) {
-                                    if (inventory[a] == d[x1][y1]) {
-                                    } else if (inventory[a] === undefined) {
-                                        inventory[a] = d[x1][y1];
-                                        break;
+                if (e.offsetX > ow + scale * (4) && e.offsetY > oh + scale * 11 && e.offsetX < ow + scale * (5) && e.offsetY < oh + scale * 12) {
+                    slot = 0;
+                } else if (e.offsetX > ow + scale * (5) && e.offsetY > oh + scale * 11 && e.offsetX < ow + scale * (6) && e.offsetY < oh + scale * 12) {
+                    slot = 1;
+                } else if (e.offsetX > ow + scale * (6) && e.offsetY > oh + scale * 11 && e.offsetX < ow + scale * (7) && e.offsetY < oh + scale * 12) {
+                    slot = 2;
+                } else if (e.offsetX > ow + scale * (7) && e.offsetY > oh + scale * 11 && e.offsetX < ow + scale * (8) && e.offsetY < oh + scale * 12) {
+                    slot = 3;
+                } else if (e.offsetX > ow + scale * (8) && e.offsetY > oh + scale * 11 && e.offsetX < ow + scale * (9) && e.offsetY < oh + scale * 12) {
+                    slot = 4;
+                } else if (e.offsetX > ow + scale * (9) && e.offsetY > oh + scale * 11 && e.offsetX < ow + scale * (10) && e.offsetY < oh + scale * 12) {
+                    slot = 5;
+                } else if (e.offsetX > ow + scale * (10) && e.offsetY > oh + scale * 11 && e.offsetX < ow + scale * (11) && e.offsetY < oh + scale * 12) {
+                    slot = 6;
+                } else if (e.offsetX > ow + scale * (11) && e.offsetY > oh + scale * 11 && e.offsetX < ow + scale * (12) && e.offsetY < oh + scale * 12) {
+                    slot = 7;
+                } else {
+                    for (var x1 = Math.floor(-px / 16 - 1); x1 < Math.ceil(17 - px / 16); x1++) {
+                        for (var y1 = Math.floor(-py / 16 - 1); y1 < Math.ceil(13 - py / 16); y1++) {
+                            if (d[x1] == undefined) {
+                                d[x1] = {};
+                            }
+                            if (d[x1][y1] != "none") {
+                                if (e.offsetX > (x1 + px / 16) * scale + ow && e.offsetY > (y1 + py / 16) * scale + oh && e.offsetX < (x1 + px / 16) * scale + scale + ow && e.offsetY < (y1 + py / 16) * scale + scale + oh) {
+                                    for (a = 0; a < 8; a++) {
+                                        if (inventory[a] == d[x1][y1]) {
+                                            inventory[a + "n"]++;
+                                            a = 8;
+                                        } else if (inventory[a] === undefined) {
+                                            inventory[a] = d[x1][y1];
+                                            a = 8;
+                                        }
                                     }
-                                }
-                                if (d[x1][y1 + "s"] == true) {
-                                    d[x1][y1] = "none";
-                                    d[x1][y1 + "s"] = false;
-                                } else {
-                                    d[x1][y1 + "s"] = true;
+                                    if (d[x1][y1 + "s"] == true) {
+                                        d[x1][y1] = "none";
+                                        d[x1][y1 + "s"] = false;
+                                    } else {
+                                        d[x1][y1 + "s"] = true;
+                                    }
                                 }
                             }
                         }
@@ -116,11 +142,24 @@
         window.addEventListener("contextmenu", function (e) {
             e.preventDefault();
             if (screen == "game") {
-                for (var x1 = Math.floor(px - 1); x1 < Math.ceil(17 + px); x1++) {
-                    for (var y1 = Math.floor(py - 1); y1 < Math.ceil(13 + py); y1++) {
-                        if (d[x1][y1] == "none") {
+                for (var x1 = -Math.floor(1 + px / 16); x1 < Math.ceil(17 - px / 16); x1++) {
+                    for (var y1 = -Math.floor(py / 16 + 1); y1 < Math.ceil(13 - py / 16); y1++) {
+                        if (d[x1] === undefined) {
+                            d[x1] = {};
+                        }
+                        if (d[x1][y1] == "none" || (d[x1][y1 + "s"] == true && d[x1][y1] == inventory[slot])) {
                             if (e.offsetX > (x1 + px / 16) * scale + ow && e.offsetY > (y1 + py / 16) * scale + oh && e.offsetX < (x1 + px / 16) * scale + scale + ow && e.offsetY < (y1 + py / 16) * scale + scale + oh) {
-                                d[x1][y1] = "dirt";
+                                if (d[x1][y1 + "s"] == true) {
+                                    d[x1][y1 + "s"] = false;
+                                } else {
+                                    d[x1][y1] = inventory[slot];
+                                    d[x1][y1 + "s"] = true;
+                                }
+                                if (inventory[slot + "n"] > 1) {
+                                    inventory[slot + "n"]--;
+                                } else {
+                                    inventory[slot] = undefined;
+                                }
                             }
                         }
                     }
@@ -182,17 +221,50 @@
                 }
             }
             if (screen == "game") {
-                if (keyw == 1) {
-                    py += 4;
+                pxs = px;
+                pys = py;
+                if (d[0] !== undefined) {
+                    py -= 16;
+                }
+                for (var x = -Math.floor(px / 16 - 7); x < Math.ceil(9 - px / 16); x++) {
+                    for (var y = -Math.floor(py / 16 - 4); y < Math.ceil(7 - py / 16); y++) {
+                        if (d[x] !== undefined) {
+                            if (d[x][y] != "none" && d[x][y] != "blade" && d[x][y + "s"] == false) {
+                                if ((ow + scale * (px / 16 + x) < ow + scale * (17 / 2) || ow + scale * (px / 16 + x + 1) > ow + scale * (15 / 2) * scale) && (oh - scale * (py / 16 + y - 2) > oh + scale * 5 || oh - scale * (py / 16 + y - 3) < oh + scale * 7)) {
+                                    spacehold = 0;
+                                    py += 16;
+                                }
+                            }
+                        }
+                    }
                 }
                 if (keya == 1) {
-                    px -= 4;
-                }
-                if (keys == 1) {
-                    py -= 4;
+                    px -= 8;
                 }
                 if (keyd == 1) {
-                    px += 4;
+                    px += 8;
+                }
+                if (keyspace == 1) {
+                    if (spacehold <= 4) {
+                        py += 32;
+                        spacehold++;
+                    }
+                }
+                for (var x = -Math.floor(px / 16 - 7); x < Math.ceil(9 - px / 16); x++) {
+                    for (var y = -Math.floor(py / 16 - 4); y < Math.ceil(7 - py / 16); y++) {
+                        if (d[x] !== undefined) {
+                            if (d[x][y] != "none" && d[x][y] != "blade" && d[x][y + "s"] == false) {
+                                if ((ow + scale * (px / 16 + x) < ow + scale * (17 / 2) || ow + scale * (px / 16 + x + 1) > ow + scale * (15 / 2) * scale) && (oh - scale * (py / 16 + y - 2) > oh + scale * 5 || oh - scale * (py / 16 + y - 3) < oh + scale * 7)) {
+                                    if (keya == 1 || keyd == 1) {
+                                        px = pxs;
+                                    }
+                                    if (keyspace == 1 && spacehold <= 4) {
+                                        py = pys;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 sc = i;
                 while (sc > 8 * ls) {
@@ -232,6 +304,7 @@
                 }
                 ctx.imageSmoothingEnabled = false;
                 ctx.drawImage(luminary, ow + scale * lw - scale, oh + scale * lh - scale, scale, scale);
+
                 for (var x = -Math.floor(px / 16 + 1); x < Math.ceil(17 - px / 16); x++) {
                     for (var y = -Math.floor(py / 16 + 1); y < Math.ceil(13 - py / 16); y++) {
                         if (d[x] === undefined) {
@@ -263,26 +336,18 @@
                                     d[x][y] = "none";
                                 }
                             }
+                            d[x][y + "s"] = false;
                         }
                         eval(d[x][y] + "i =" + "new Image()");
                         eval(d[x][y] + "i.src = \"assets/textures/" + d[x][y] + ".png\"");
                         if (d[x][y] == "none") {
-                        } else if (d[x][y] == "water") {
-                            wateri.src = "assets/textures/water.gif";
-                            ctx.drawImage(wateri, ow + scale * (x + px / 16), oh + scale * (y + py / 16), scale, scale);
                         } else {
                             if (Math.ceil(sc / ls) % 2 == 0) {
                                 ctx.fillRect(ow + scale * (x + px / 16), oh + scale * (y + py / 16), scale, scale);
                                 ctx.globalAlpha = 0.5;
                             }
                             if (d[x][y + "s"] == true) {
-                                if (d[x + 1][y] == "none" || d[x - 1][y] == "none" || d[x][y + 1] == "none" || d[x][y - 1] == "none") {
-                                    ctx.fillStyle = "#808080";
-                                } else if (d[x + 2][y] == "none" || d[x - 2][y] == "none" || d[x][y + 2] == "none" || d[x][y - 2] == "none" || d[x + 1][y + 1] == "none" || d[x - 1][y - 1] == "none" || d[x + 1][y - 1] == "none" || d[x - 1][y + 1] == "none") {
-                                    ctx.fillStyle = "#404040";
-                                } else {
-                                    ctx.fillStyle = "#000000";
-                                }
+                                ctx.fillStyle = "#000000";
                                 ctx.fillRect(ow + scale * (x + px / 16), oh + scale * (y + py / 16), scale, scale);
                                 ctx.globalAlpha /= 2;
                             }
@@ -293,14 +358,24 @@
                             if (inventory[a1] === undefined) {
                                 ctx.drawImage(back, ow + scale * (4 + a1), oh + scale * 11, scale, scale);
                             } else {
-                                eval(inventory[a1] + "i =" + "new Image()");
-                                eval(inventory[a1] + "i.src = \"assets/textures/" + inventory[a1] + ".png\"");
                                 eval("ctx.drawImage(" + inventory[a1] + "i, ow + scale * (4 +a1), oh + scale*11, scale, scale)");
                             }
-                            ctx.drawImage(item, ow + scale * (4 + a1), oh + scale * 11, scale, scale);
+                            if (slot == a1) {
+                                ctx.drawImage(itemselected, ow + scale * (4 + a1), oh + scale * 11, scale, scale);
+                            } else {
+                                ctx.drawImage(item, ow + scale * (4 + a1), oh + scale * 11, scale, scale);
+                            }
+                            if (inventory[a1 + "n"] === undefined) {
+                                inventory[a1 + "n"] = 1;
+                            }
+                            if (inventory[a1 + "n"] > 1) {
+                                write(inventory[a1 + "n"].toString(), (4 + a1) * 2, 23);
+                            }
                         }
                     }
                 }
+                ctx.drawImage(player, ow + (15 / 2) * scale, oh + 5 * scale, scale, 2 * scale);
+                gravity = true;
                 if (music.paused) {
                     mp();
                 }
@@ -361,9 +436,9 @@
                     if (character == ".") {
                         character = "period";
                     }
-                    eval(character + "c = new Image()");
-                    eval(character + "c.src = \"assets/textures/" + character + ".png\"");
-                    eval("ctx.drawImage(" + character + "c, ow + scale * (b +i1 + space/2)/2, oh + c*scale/2, scale/2, scale/2)");
+                    eval("c" + character + " = new Image()");
+                    eval("c" + character + ".src = \"assets/textures/" + character + ".png\"");
+                    eval("ctx.drawImage(c" + character + ", ow + scale * (b +i1 + space/2)/2, oh + c*scale/2, scale/2, scale/2)");
                 }
             }
         }
