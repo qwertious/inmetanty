@@ -229,7 +229,7 @@
                 for (var x = -Math.floor(px / 16 - 7); x < Math.ceil(9 - px / 16); x++) {
                     for (var y = -Math.floor(py / 16 - 4); y < Math.ceil(7 - py / 16); y++) {
                         if (d[x] !== undefined) {
-                            if (d[x][y] != "none" && d[x][y] != "blade" && d[x][y + "s"] == false) {
+                            if (d[x][y] != "none" && d[x][y] != "blade" && d[x][y] != "water" && d[x][y + "s"] == false) {
                                 if ((ow + scale * (px / 16 + x) < ow + scale * (17 / 2) || ow + scale * (px / 16 + x + 1) > ow + scale * (15 / 2) * scale) && (oh - scale * (py / 16 + y - 2) > oh + scale * 5 || oh - scale * (py / 16 + y - 3) < oh + scale * 7)) {
                                     spacehold = 0;
                                     py += 16;
@@ -253,7 +253,7 @@
                 for (var x = -Math.floor(px / 16 - 7); x < Math.ceil(9 - px / 16); x++) {
                     for (var y = -Math.floor(py / 16 - 4); y < Math.ceil(7 - py / 16); y++) {
                         if (d[x] !== undefined) {
-                            if (d[x][y] != "none" && d[x][y] != "blade" && d[x][y + "s"] == false) {
+                            if (d[x][y] != "none" && d[x][y] != "blade" && d[x][y] != "water" && d[x][y + "s"] == false) {
                                 if ((ow + scale * (px / 16 + x) < ow + scale * (17 / 2) || ow + scale * (px / 16 + x + 1) > ow + scale * (15 / 2) * scale) && (oh - scale * (py / 16 + y - 2) > oh + scale * 5 || oh - scale * (py / 16 + y - 3) < oh + scale * 7)) {
                                     if (keya == 1 || keyd == 1) {
                                         px = pxs;
@@ -355,9 +355,8 @@
                             ctx.globalAlpha = 1;
                         }
                         for (a1 = 0; a1 < 8; a1++) {
-                            if (inventory[a1] === undefined) {
-                                ctx.drawImage(back, ow + scale * (4 + a1), oh + scale * 11, scale, scale);
-                            } else {
+                            ctx.drawImage(back, ow + scale * (4 + a1), oh + scale * 11, scale, scale);
+                            if (inventory[a1] !== undefined) {
                                 eval("ctx.drawImage(" + inventory[a1] + "i, ow + scale * (4 +a1), oh + scale*11, scale, scale)");
                             }
                             if (slot == a1) {
