@@ -391,15 +391,15 @@
             return -
                 Math.round(
                     (
-                        Math.sin(Math.PI * Math.round(a2) / (2048)) * 512
-                        + Math.sin(Math.PI * Math.round(a2) * Math.sqrt(2) / (2048)) * 512
-                        + Math.sin(Math.PI * Math.round(a2) * Math.sqrt(3) / (2048)) * 512
+                        Math.sin(Math.PI * Math.round(a2/2) / (2048)) * 512
+                        + Math.sin(Math.PI * Math.round(a2/2)* Math.sqrt(2) / (2048)) * 512
+                        + Math.sin(Math.PI * Math.round(a2/2) * Math.sqrt(3) / (2048)) * 512
                     ) / 3
                     //+ 128 ^ (Math.sin(Math.PI * Math.round(a2) / 1024))
                     //+ 64 ^ (Math.sin(Math.PI * Math.round(a2) * Math.sqrt(2) / 512))
                     //+ 32 ^ (Math.sin(Math.PI * Math.round(a2) * Math.sqrt(3) / 256))
                     //- 1.5
-                ) + 12;
+                /2) + 12;
         }
         function mp() {
             if (screen == "prologue") {
