@@ -21,7 +21,7 @@
         var d = {};
         d[3] = {};
         var px = 0;
-        var py = 64;
+        var py = 16 * 12;
         var inventory = {};
         var sc = 0;
         var lw = 0;
@@ -224,15 +224,15 @@
                 pxs = px;
                 pys = py;
                 if (d[0] !== undefined) {
-                    py -= 16;
+                    py -= 8;
                 }
                 for (var x = -Math.floor(px / 16 - 7); x < Math.ceil(9 - px / 16); x++) {
                     for (var y = -Math.floor(py / 16 - 4); y < Math.ceil(7 - py / 16); y++) {
                         if (d[x] !== undefined) {
-                            if (d[x][y] != "none" && d[x][y] != "blade" && d[x][y] != "water" && d[x][y + "s"] == false) {
+                            if (d[x][y] != "none" && d[x][y] != "blade" && d[x][y] != "water" && d[x][y] != "leaves" && d[x][y + "s"] == false) {
                                 if ((ow + scale * (px / 16 + x) < ow + scale * (17 / 2) || ow + scale * (px / 16 + x + 1) > ow + scale * (15 / 2) * scale) && (oh - scale * (py / 16 + y - 2) > oh + scale * 5 || oh - scale * (py / 16 + y - 3) < oh + scale * 7)) {
+                                    py += 8;
                                     spacehold = 0;
-                                    py += 16;
                                 }
                             }
                         }
@@ -246,14 +246,14 @@
                 }
                 if (keyspace == 1) {
                     if (spacehold <= 4) {
-                        py += 32;
+                        py += 16;
                         spacehold++;
                     }
                 }
                 for (var x = -Math.floor(px / 16 - 7); x < Math.ceil(9 - px / 16); x++) {
                     for (var y = -Math.floor(py / 16 - 4); y < Math.ceil(7 - py / 16); y++) {
                         if (d[x] !== undefined) {
-                            if (d[x][y] != "none" && d[x][y] != "blade" && d[x][y] != "water" && d[x][y + "s"] == false) {
+                            if (d[x][y] != "none" && d[x][y] != "blade" && d[x][y] != "water" && d[x][y] != "leaves" && d[x][y + "s"] == false) {
                                 if ((ow + scale * (px / 16 + x) < ow + scale * (17 / 2) || ow + scale * (px / 16 + x + 1) > ow + scale * (15 / 2) * scale) && (oh - scale * (py / 16 + y - 2) > oh + scale * 5 || oh - scale * (py / 16 + y - 3) < oh + scale * 7)) {
                                     if (keya == 1 || keyd == 1) {
                                         px = pxs;
@@ -304,7 +304,6 @@
                 }
                 ctx.imageSmoothingEnabled = false;
                 ctx.drawImage(luminary, ow + scale * lw - scale, oh + scale * lh - scale, scale, scale);
-
                 for (var x = -Math.floor(px / 16 + 1); x < Math.ceil(17 - px / 16); x++) {
                     for (var y = -Math.floor(py / 16 + 1); y < Math.ceil(13 - py / 16); y++) {
                         if (d[x] === undefined) {
@@ -317,6 +316,76 @@
                                     if (Math.floor(Math.sin(x * Math.sqrt(2) * 64 * 64)) == 0) {
                                         d[x][y - 1] = "blade";
                                     }
+                                    if ((x + Math.sin(Math.PI * x * Math.sqrt(2))) % 16 > 15 && (x + Math.sin(Math.PI * (x - 1) * Math.sqrt(2))) % 16 > 15) {
+                                        d[x][y - 1] = "applewood";
+                                        d[x][y - 1 + "s"] = true;
+                                        d[x][y - 2] = "applewood";
+                                        d[x][y - 2 + "s"] = true;
+                                        d[x - 1] = {};
+                                        d[x + 1] = {};
+                                        d[x - 2] = {};
+                                        d[x + 2] = {};
+                                        if ((Math.sin(Math.PI * x * Math.sqrt(2)) + 1) * 2 <= 1) {
+                                            d[x][y - 3] = "applewood";
+                                            d[x][y - 3 + "s"] = true;
+                                            d[x][y - 4] = "applewood";
+                                            d[x][y - 4 + "s"] = true;
+                                            d[x - 1][y - 5] = "applewood_leaves"
+                                            d[x][y - 5] = "applewood_leaves"
+                                            d[x + 1][y - 5] = "applewood_leaves"
+                                            d[x - 1][y - 6] = "applewood_leaves"
+                                            d[x][y - 6] = "applewood_leaves"
+                                            d[x + 1][y - 6] = "applewood_leaves"
+                                            d[x][y - 7] = "applewood_leaves"
+                                        } else if ((Math.sin(Math.PI * x * Math.sqrt(2)) + 1) * 2 <= 2) {
+                                            d[x - 1][y - 3] = "applewood";
+                                            d[x - 1][y - 3 + "s"] = true;
+                                            d[x + 1][y - 3] = "applewood";
+                                            d[x + 1][y - 3 + "s"] = true;
+                                            d[x - 1][y - 4] = "applewood";
+                                            d[x - 1][y - 4 + "s"] = true;
+                                            d[x + 1][y - 4] = "applewood";
+                                            d[x + 1][y - 4 + "s"] = true;
+                                            d[x - 2][y - 5] = "applewood_leaves"
+                                            d[x - 1][y - 5] = "applewood_leaves"
+                                            d[x][y - 5] = "applewood_leaves"
+                                            d[x + 1][y - 5] = "applewood_leaves"
+                                            d[x + 2][y - 5] = "applewood_leaves"
+                                            d[x - 2][y - 6] = "applewood_leaves"
+                                            d[x - 1][y - 6] = "applewood_leaves"
+                                            d[x][y - 6] = "applewood_leaves"
+                                            d[x + 1][y - 6] = "applewood_leaves"
+                                            d[x + 2][y - 6] = "applewood_leaves"
+                                            d[x - 1][y - 7] = "applewood_leaves"
+                                            d[x][y - 7] = "applewood_leaves"
+                                            d[x + 1][y - 7] = "applewood_leaves"
+                                            d[x][y - 8] = "applewood_leaves"
+                                        } else if ((Math.sin(Math.PI * x * Math.sqrt(2)) + 1) * 2 <= 3) {
+                                            d[x - 1][y - 3] = "applewood";
+                                            d[x - 1][y - 3 + "s"] = true;
+                                            d[x - 1][y - 4] = "applewood";
+                                            d[x - 1][y - 4 + "s"] = true;
+                                            d[x - 2][y - 5] = "applewood_leaves"
+                                            d[x - 1][y - 5] = "applewood_leaves"
+                                            d[x][y - 5] = "applewood_leaves"
+                                            d[x - 1][y - 6] = "applewood_leaves"
+                                            d[x][y - 6] = "applewood_leaves"
+                                            d[x + 1][y - 6] = "applewood_leaves"
+                                            d[x][y - 7] = "applewood_leaves"
+                                        } else {
+                                            d[x + 1][y - 3] = "applewood";
+                                            d[x + 1][y - 3 + "s"] = true;
+                                            d[x + 1][y - 4] = "applewood";
+                                            d[x + 1][y - 4 + "s"] = true;
+                                            d[x][y - 5] = "applewood_leaves"
+                                            d[x + 1][y - 5] = "applewood_leaves"
+                                            d[x + 2][y - 5] = "applewood_leaves"
+                                            d[x + 2][y - 6] = "applewood_leaves"
+                                            d[x + 1][y - 6] = "applewood_leaves"
+                                            d[x][y - 6] = "applewood_leaves"
+                                            d[x + 1][y - 7] = "applewood_leaves"
+                                        }
+                                    }
                                 }
                             } else if (y > ourworldg(x)) {
                                 d[x][y] = "dirt";
@@ -326,11 +395,23 @@
                                         d[x][y] = "sandstone";
                                         if (y - 100 > ourworldg(x)) {
                                             d[x][y] = "slate";
+                                            if (y - 150 > ourworldg(x)) {
+                                                d[x][y] = "obsidian";
+                                                if (y - 200 > ourworldg(x)) {
+                                                    d[x][y] = "slate";
+                                                    if (y - 250 > ourworldg(x)) {
+                                                        d[x][y] = "magmastone";
+                                                        if (y - 300 > ourworldg(x)) {
+                                                            d[x][y] = "slate";
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             } else {
-                                if (y >= 12) {
+                                if (y >= 0) {
                                     d[x][y] = "water";
                                 } else {
                                     d[x][y] = "none";
@@ -368,7 +449,7 @@
                                 inventory[a1 + "n"] = 1;
                             }
                             if (inventory[a1 + "n"] > 1) {
-                                write(inventory[a1 + "n"].toString(), (4 + a1) * 2, 23);
+                                //write(inventory[a1 + "n"].toString(), (4 + a1) * 2, 23);
                             }
                         }
                     }
@@ -391,15 +472,15 @@
             return -
                 Math.round(
                     (
-                        Math.sin(Math.PI * Math.round(a2/2) / (2048)) * 512
-                        + Math.sin(Math.PI * Math.round(a2/2)* Math.sqrt(2) / (2048)) * 512
-                        + Math.sin(Math.PI * Math.round(a2/2) * Math.sqrt(3) / (2048)) * 512
+                        Math.sin(Math.PI * Math.round(a2 / 2) / (2048)) * 512
+                        + Math.sin(Math.PI * Math.round(a2 / 2) * Math.sqrt(2) / (2048)) * 512
+                        + Math.sin(Math.PI * Math.round(a2 / 2) * Math.sqrt(3) / (2048)) * 512
                     ) / 3
                     //+ 128 ^ (Math.sin(Math.PI * Math.round(a2) / 1024))
                     //+ 64 ^ (Math.sin(Math.PI * Math.round(a2) * Math.sqrt(2) / 512))
                     //+ 32 ^ (Math.sin(Math.PI * Math.round(a2) * Math.sqrt(3) / 256))
                     //- 1.5
-                /2) + 12;
+                    / 2);
         }
         function mp() {
             if (screen == "prologue") {
