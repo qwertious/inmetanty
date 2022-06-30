@@ -272,6 +272,7 @@
                 while (sc > 8 * ls) {
                     sc -= 8 * ls;
                 }
+                //TODO: https://github.com/qwertious/inmetanty/issues/23 Make a gradient for sky color
                 if (Math.ceil(sc / ls) % 2 == 0) {
                     ctx.fillStyle = "#000000";
                     ctx.fillRect(ow, oh, width, height);
@@ -318,6 +319,7 @@
                                     if (Math.floor(Math.sin(x * Math.sqrt(2) * 64 * 64)) == 0) {
                                         d[x][y - 1] = "blade";
                                     }
+                                    //TODO: https://github.com/qwertious/inmetanty/issues/24 Improve trees
                                     if ((x + Math.sin(Math.PI * x * Math.sqrt(2))) % 16 > 15 && (x + Math.sin(Math.PI * (x - 1) * Math.sqrt(2))) % 16 > 15) {
                                         d[x][y - 1] = "applewood";
                                         d[x][y - 1 + "s"] = true;
@@ -451,6 +453,7 @@
                                 inventory[a1 + "n"] = 1;
                             }
                             if (inventory[a1 + "n"] > 1) {
+                                //ISSUE: https://github.com/qwertious/inmetanty/issues/25 Hotbar number display lags
                                 //write(inventory[a1 + "n"].toString(), (4 + a1) * 2, 23);
                             }
                         }
