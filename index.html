@@ -423,9 +423,9 @@
                             }
                             d[x][y + "s"] = false;
                         }
+                        if (d[x][y] == "none") {
                         eval(d[x][y] + "i =" + "new Image()");
                         eval(d[x][y] + "i.src = \"assets/textures/" + d[x][y] + ".png\"");
-                        if (d[x][y] == "none") {
                         } else {
                             if (Math.ceil(sc / ls) % 2 == 0) {
                                 ctx.fillRect(ow + scale * (x + px / 16), oh + scale * (y + py / 16), scale, scale);
@@ -481,6 +481,7 @@
                         + Math.sin(Math.PI * Math.round(a2 / 2) * Math.sqrt(2) / (2048)) * 512
                         + Math.sin(Math.PI * Math.round(a2 / 2) * Math.sqrt(3) / (2048)) * 512
                     ) / 3
+                    //TODO: https://github.com/qwertious/inmetanty/issues/26 Fix broken extra features for generation.
                     //+ 128 ^ (Math.sin(Math.PI * Math.round(a2) / 1024))
                     //+ 64 ^ (Math.sin(Math.PI * Math.round(a2) * Math.sqrt(2) / 512))
                     //+ 32 ^ (Math.sin(Math.PI * Math.round(a2) * Math.sqrt(3) / 256))
