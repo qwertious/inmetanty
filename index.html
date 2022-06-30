@@ -424,9 +424,9 @@
                             d[x][y + "s"] = false;
                         }
                         if (d[x][y] == "none") {
+                        } else {
                         eval(d[x][y] + "i =" + "new Image()");
                         eval(d[x][y] + "i.src = \"assets/textures/" + d[x][y] + ".png\"");
-                        } else {
                             if (Math.ceil(sc / ls) % 2 == 0) {
                                 ctx.fillRect(ow + scale * (x + px / 16), oh + scale * (y + py / 16), scale, scale);
                                 ctx.globalAlpha = 0.5;
