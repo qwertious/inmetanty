@@ -9,6 +9,7 @@
 <body style="margin: 0;">
     <canvas id="view" style="background-color: black; position: absolute;" width="16" height="16"></canvas>
     <script>
+        //TODO: https://github.com/qwertious/inmetanty/issues/20 Fix large amounts of variables
         var width = 16;
         var height = 16;
         var ow = 16;
@@ -60,7 +61,6 @@
                 keyd = 1;
             } else if (e.keyCode == 68) {
                 keya = 1;
-                //detect space key
             } else if (e.keyCode == 32) {
                 if (spacehold == 0) {
                     keyspace = 1;
@@ -226,6 +226,8 @@
                 if (d[0] !== undefined) {
                     py -= 8;
                 }
+                //ISSUE: https://github.com/qwertious/inmetanty/issues/21 Fix collision
+                //TODO: https://github.com/qwertious/inmetanty/issues/22 Move collision detection to a customizeable function
                 for (var x = -Math.floor(px / 16 - 7); x < Math.ceil(9 - px / 16); x++) {
                     for (var y = -Math.floor(py / 16 - 4); y < Math.ceil(7 - py / 16); y++) {
                         if (d[x] !== undefined) {
